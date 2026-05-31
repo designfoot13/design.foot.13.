@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600;700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
+
 body{
   margin:0;
   background:
@@ -16,12 +17,34 @@ body{
   font-family:'Montserrat',sans-serif;
 }
 
+/* BARRE ABONNÉS */
+.stats-bar{
+  position:fixed;
+  top:0;
+  width:100%;
+  background:#000000ee;
+  display:flex;
+  justify-content:center;
+  gap:80px;
+  padding:12px;
+  z-index:9999;
+  border-bottom:1px solid #1aff6f55;
+  text-align:center;
+}
+
+.stats-bar strong{
+  color:#1aff6f;
+  font-size:1.3em;
+}
+
+/* HEADER */
 header{
   height:90vh;
   display:flex;
   align-items:center;
   justify-content:center;
   text-align:center;
+  margin-top:60px;
   background:
     linear-gradient(180deg,#000000cc,#000000),
     repeating-linear-gradient(
@@ -36,9 +59,7 @@ header{
 header h1{
   font-family:'Teko',sans-serif;
   font-size:5em;
-  letter-spacing:4px;
   margin:0;
-  text-transform:uppercase;
   text-shadow:0 0 30px #1aff6f;
 }
 
@@ -47,6 +68,7 @@ header p{
   opacity:0.85;
 }
 
+/* SECTIONS */
 section{
   padding:90px 8%;
 }
@@ -56,21 +78,19 @@ h2{
   font-size:3em;
   text-align:center;
   margin-bottom:60px;
-  letter-spacing:2px;
 }
 
+/* GALERIE */
 .gallery{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:45px;
+  gap:35px;
 }
 
 .card{
-  position:relative;
   overflow:hidden;
   border-radius:18px;
   box-shadow:0 25px 60px rgba(0,0,0,0.8);
-  transform:skewY(-1deg);
   transition:0.4s;
 }
 
@@ -79,18 +99,48 @@ h2{
   display:block;
 }
 
-.card::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(180deg,transparent,#000000cc);
-}
-
 .card:hover{
-  transform:scale(1.07) skewY(-1deg);
-  box-shadow:0 0 50px #1aff6f;
+  transform:scale(1.05);
+  box-shadow:0 0 40px #1aff6f;
 }
 
+/* COLLAB */
+.collab-wrapper{
+  display:flex;
+  justify-content:center;
+  gap:120px;
+  flex-wrap:wrap;
+}
+
+.collab-section{
+  text-align:center;
+}
+
+.collab-section h3{
+  font-family:'Teko',sans-serif;
+  color:#1aff6f;
+  font-size:2em;
+}
+
+.collab-item img{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid #1aff6f;
+  box-shadow:0 0 25px #1aff6f66;
+}
+
+.collab-item p{
+  margin-top:15px;
+  font-weight:700;
+}
+
+.collab-item span{
+  color:#1aff6f;
+}
+
+/* CTA */
 .cta{
   text-align:center;
 }
@@ -98,45 +148,48 @@ h2{
 .cta a{
   display:inline-block;
   padding:18px 45px;
-  margin-top:25px;
   background:#1aff6f;
   color:#000;
   font-weight:700;
+  border-radius:50px;
   text-decoration:none;
-  border-radius:60px;
-  letter-spacing:1px;
-  transition:0.3s;
 }
 
-.cta a:hover{
-  background:white;
-}
-
+/* ABOUT */
 .about{
   max-width:900px;
   margin:auto;
-  font-size:1.2em;
   text-align:center;
-  line-height:1.7;
+  line-height:1.8;
 }
 
+/* FOOTER */
 footer{
   background:#000;
-  padding:60px 20px;
   text-align:center;
+  padding:60px 20px;
 }
 
 footer a{
   color:#1aff6f;
+  margin:0 15px;
   text-decoration:none;
-  margin:0 20px;
-  font-weight:600;
 }
+
 </style>
 </head>
 
 <body>
 
+<!-- ABONNÉS -->
+<div class="stats-bar">
+  <div>
+    <strong>3000</strong><br>
+    Abonnés
+  </div>
+</div>
+
+<!-- HEADER -->
 <header>
   <div>
     <h1>DESIGN FOOT 13</h1>
@@ -144,9 +197,13 @@ footer a{
   </div>
 </header>
 
+<!-- AFFICHES -->
 <section>
   <h2>MES AFFICHES</h2>
+
   <div class="gallery">
+
+    <!-- ANCIENNES -->
     <div class="card"><img src="trapel-fc.jpg.PNG"></div>
     <div class="card"><img src="om.jpg.PNG"></div>
     <div class="card"><img src="tottenham.jpg.PNG"></div>
@@ -154,13 +211,56 @@ footer a{
     <div class="card"><img src="arsenal.jpg.JPG"></div>
     <div class="card"><img src="sofiane-diop.jpg.PNG"></div>
     <div class="card"><img src="liverpool-om.jpg.PNG"></div>
-    <div class="card"><img src="bayeux-om.jpg.jpg"></div> 
-    <div class="card"><img src="angers-om.jpg.jpeg"></div> 
-    <div class="card"><img src="manchester-derby.jpg.png"></div> 
+    <div class="card"><img src="bayeux-om.jpg.jpg"></div>
+    <div class="card"><img src="angers-om.jpg.jpeg"></div>
+    <div class="card"><img src="manchester-derby.jpg.png"></div>
     <div class="card"><img src="om-nantes.jpg.png"></div>
+
+    <!-- NOUVELLES -->
+    <div class="card"><img src="psg-sacre.png"></div>
+    <div class="card"><img src="bresil.png"></div>
+    <div class="card"><img src="lewandowski.png"></div>
+    <div class="card"><img src="dylan-biaka.png"></div>
+    <div class="card"><img src="clasico.png"></div>
+    <div class="card"><img src="fleurynho.png"></div>
+    <div class="card"><img src="coupe-du-monde.png"></div>
+    <div class="card"><img src="om-logo.png"></div>
+    <div class="card"><img src="city.png"></div>
+    <div class="card"><img src="rc-lens.png"></div>
+    <div class="card"><img src="strasbourg.png"></div>
+
   </div>
 </section>
 
+<!-- COLLABORATIONS -->
+<section>
+  <h2>COLLABORATIONS</h2>
+
+  <div class="collab-wrapper">
+
+    <div class="collab-section">
+      <h3>CLUBS</h3>
+
+      <div class="collab-item">
+        <img src="om-logo.png">
+        <p>Olympique de Marseille</p>
+        <span>vs FC Bayeux</span>
+      </div>
+    </div>
+
+    <div class="collab-section">
+      <h3>JOUEURS</h3>
+
+      <div class="collab-item">
+        <img src="dylan-biaka-photo.png">
+        <p>UFT</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DEMANDE -->
 <section class="cta">
   <h2>DEMANDE D’AFFICHE</h2>
   <p>Commande ton affiche personnalisée</p>
@@ -169,15 +269,18 @@ footer a{
   </a>
 </section>
 
+<!-- ABOUT -->
 <section>
   <h2>EN SAVOIR PLUS</h2>
+
   <div class="about">
-    Bonjour moi c’est design Foot 13.  
-    Je fais des affiches de toutes sortes pour les clubs et les joueurs pro ou non pro.  
-    Si jamais vous voulez une demande n’hésitez pas.
+    Bonjour moi c’est Design Foot 13.  
+    Je fais des affiches de football pour clubs et joueurs professionnels ou amateurs.  
+    N’hésite pas à me contacter pour une création !
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
   <p>Suivez Design Foot 13</p>
   <a href="https://www.instagram.com/design_foot_13" target="_blank">Instagram</a>
@@ -186,4 +289,3 @@ footer a{
 
 </body>
 </html>
-
