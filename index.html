@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Design Foot 13</title>
+<title>Design Foot 13 - Premium</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600;700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
 
@@ -11,25 +11,42 @@
 body{
   margin:0;
   background:
-    radial-gradient(circle at top, #1aff6f33, transparent 40%),
+    radial-gradient(circle at top, #1aff6f22, transparent 45%),
+    radial-gradient(circle at bottom, #00c3ff22, transparent 40%),
     linear-gradient(180deg,#050505,#0b0b0b);
   color:white;
   font-family:'Montserrat',sans-serif;
+  overflow-x:hidden;
 }
 
-/* BARRE ABONNÉS */
+/* PARTICLES BACKGROUND */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:radial-gradient(#1aff6f55 1px, transparent 1px);
+  background-size:60px 60px;
+  opacity:0.15;
+  pointer-events:none;
+  animation:moveBg 20s linear infinite;
+}
+
+@keyframes moveBg{
+  from{transform:translateY(0px)}
+  to{transform:translateY(-60px)}
+}
+
 .stats-bar{
   position:fixed;
   top:0;
   width:100%;
-  background:#000000ee;
+  background:#000000dd;
   display:flex;
   justify-content:center;
-  gap:80px;
+  gap:60px;
   padding:12px;
   z-index:9999;
   border-bottom:1px solid #1aff6f55;
-  text-align:center;
 }
 
 .stats-bar strong{
@@ -37,7 +54,6 @@ body{
   font-size:1.3em;
 }
 
-/* HEADER */
 header{
   height:90vh;
   display:flex;
@@ -46,29 +62,23 @@ header{
   text-align:center;
   margin-top:60px;
   background:
-    linear-gradient(180deg,#000000cc,#000000),
-    repeating-linear-gradient(
-      90deg,
-      #1aff6f11 0px,
-      #1aff6f11 2px,
-      transparent 2px,
-      transparent 80px
-    );
+    radial-gradient(circle at center,#1aff6f11,transparent 60%),
+    linear-gradient(180deg,#000000cc,#000000);
 }
 
 header h1{
   font-family:'Teko',sans-serif;
-  font-size:5em;
+  font-size:6em;
   margin:0;
-  text-shadow:0 0 30px #1aff6f;
+  text-shadow:0 0 40px #1aff6f;
+  animation:glow 2s infinite alternate;
 }
 
-header p{
-  font-size:1.3em;
-  opacity:0.85;
+@keyframes glow{
+  from{filter:drop-shadow(0 0 5px #1aff6f)}
+  to{filter:drop-shadow(0 0 25px #1aff6f)}
 }
 
-/* SECTIONS */
 section{
   padding:90px 8%;
 }
@@ -78,9 +88,22 @@ h2{
   font-size:3em;
   text-align:center;
   margin-bottom:60px;
+  letter-spacing:2px;
 }
 
-/* GALERIE */
+/* PRICE BOX */
+.price-box{
+  text-align:center;
+  margin-top:20px;
+  font-size:1.2em;
+  opacity:0.9;
+}
+
+.price-box span{
+  color:#1aff6f;
+  font-weight:bold;
+}
+
 .gallery{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -88,82 +111,99 @@ h2{
 }
 
 .card{
+  position:relative;
   overflow:hidden;
   border-radius:18px;
   box-shadow:0 25px 60px rgba(0,0,0,0.8);
   transition:0.4s;
+  cursor:pointer;
 }
 
 .card img{
   width:100%;
   display:block;
+  transition:0.4s;
 }
 
 .card:hover{
-  transform:scale(1.05);
+  transform:scale(1.05) rotateZ(-1deg);
   box-shadow:0 0 40px #1aff6f;
 }
 
-/* COLLAB */
-.collab-wrapper{
-  display:flex;
+.card::after{
+  content:"Voir +";
+  position:absolute;
+  bottom:10px;
+  right:10px;
+  background:#1aff6f;
+  color:#000;
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:12px;
+  opacity:0;
+  transition:0.3s;
+}
+
+.card:hover::after{
+  opacity:1;
+}
+
+/* MODAL */
+.modal{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.9);
+  display:none;
+  align-items:center;
   justify-content:center;
-  gap:120px;
-  flex-wrap:wrap;
+  z-index:10000;
 }
 
-.collab-section{
-  text-align:center;
+.modal-content{
+  width:70%;
+  max-width:700px;
+  animation:flip 0.8s ease;
 }
 
-.collab-section h3{
-  font-family:'Teko',sans-serif;
+.modal-content img{
+  width:100%;
+  border-radius:15px;
+  box-shadow:0 0 40px #1aff6f;
+}
+
+@keyframes flip{
+  from{transform:rotateY(90deg) scale(0.5); opacity:0}
+  to{transform:rotateY(0deg) scale(1); opacity:1}
+}
+
+.close{
+  position:absolute;
+  top:20px;
+  right:30px;
+  font-size:40px;
   color:#1aff6f;
-  font-size:2em;
-}
-
-.collab-item img{
-  width:150px;
-  height:150px;
-  border-radius:50%;
-  object-fit:cover;
-  border:3px solid #1aff6f;
-  box-shadow:0 0 25px #1aff6f66;
-}
-
-.collab-item p{
-  margin-top:15px;
-  font-weight:700;
-}
-
-.collab-item span{
-  color:#1aff6f;
+  cursor:pointer;
 }
 
 /* CTA */
-.cta{
-  text-align:center;
-}
-
 .cta a{
   display:inline-block;
   padding:18px 45px;
-  background:#1aff6f;
+  background:linear-gradient(90deg,#1aff6f,#00c3ff);
   color:#000;
   font-weight:700;
   border-radius:50px;
   text-decoration:none;
+  transition:0.3s;
 }
 
-/* ABOUT */
-.about{
-  max-width:900px;
-  margin:auto;
-  text-align:center;
-  line-height:1.8;
+.cta a:hover{
+  transform:scale(1.1);
 }
 
-/* FOOTER */
 footer{
   background:#000;
   text-align:center;
@@ -181,111 +221,65 @@ footer a{
 
 <body>
 
-<!-- ABONNÉS -->
 <div class="stats-bar">
-  <div>
-    <strong>3000</strong><br>
-    Abonnés
-  </div>
+  <div><strong>3000</strong><br>Abonnés</div>
 </div>
 
-<!-- HEADER -->
 <header>
   <div>
     <h1>DESIGN FOOT 13</h1>
-    <p>Affiches football • Clubs & joueurs • Matchs</p>
+    <p>Affiches football • Créations premium • Clubs & joueurs</p>
+    <div class="price-box">
+      Prix d’une affiche : <span>10€</span><br>
+      Contact pour négociation ou abonnement personnalisé
+    </div>
   </div>
 </header>
 
-<!-- AFFICHES -->
 <section>
   <h2>MES AFFICHES</h2>
 
   <div class="gallery">
-
-    <!-- ANCIENNES -->
     <div class="card"><img src="trapel-fc.jpg.PNG"></div>
     <div class="card"><img src="om.jpg.PNG"></div>
     <div class="card"><img src="tottenham.jpg.PNG"></div>
     <div class="card"><img src="manchester-united.jpg.PNG"></div>
     <div class="card"><img src="arsenal.jpg.JPG"></div>
-    <div class="card"><img src="sofiane-diop.jpg.PNG"></div>
     <div class="card"><img src="liverpool-om.jpg.PNG"></div>
-    <div class="card"><img src="bayeux-om.jpg.jpg"></div>
-    <div class="card"><img src="angers-om.jpg.jpeg"></div>
-    <div class="card"><img src="manchester-derby.jpg.png"></div>
-    <div class="card"><img src="om-nantes.jpg.png"></div>
-
-    <!-- NOUVELLES -->
     <div class="card"><img src="psg-sacre.png.png"></div>
-    <div class="card"><img src="bresil.png.jpeg"></div>
-    <div class="card"><img src="lewandowski.png.png"></div>
-    <div class="card"><img src="dylan-biaka.png.jpeg"></div>
-    <div class="card"><img src="clasico.png.png"></div>
-    <div class="card"><img src="fleurynho.png.png"></div>
-    <div class="card"><img src="coupe-du-monde.png.jpeg"></div>
     <div class="card"><img src="city.png.png"></div>
-    <div class="card"><img src="rc-lens.png.png"></div>
-    <div class="card"><img src="strasbourg.png.png"></div>
-
   </div>
 </section>
 
-<!-- COLLABORATIONS -->
-<section>
-  <h2>COLLABORATIONS</h2>
-
-  <div class="collab-wrapper">
-
-    <div class="collab-section">
-      <h3>CLUBS</h3>
-
-      <div class="collab-item">
-        <img src="om-logo.png.jpeg">
-        <p>Olympique de Marseille</p>
-        <span>vs FC Bayeux</span>
-      </div>
-    </div>
-
-    <div class="collab-section">
-      <h3>JOUEURS</h3>
-
-      <div class="collab-item">
-        <img src="dylan-biaka-photo.png.jpeg">
-        <p>Dylan Biaka</p>
-        <span>UFT</span>
-      </div>
-    </div>
-
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <span class="close" onclick="closeModal()">×</span>
+  <div class="modal-content">
+    <img id="modalImg">
   </div>
-</section>
+</div>
 
-<!-- DEMANDE -->
-<section class="cta">
-  <h2>DEMANDE D’AFFICHE</h2>
-  <p>Commande ton affiche personnalisée</p>
-  <a href="mailto:designfoot13@gmail.com?subject=Demande%20d'affiche">
-    FAIRE UNE DEMANDE
-  </a>
-</section>
+<script>
+const cards = document.querySelectorAll('.card');
+const modal = document.getElementById('modal');
+const modalImg = document.getElementById('modalImg');
 
-<!-- ABOUT -->
-<section>
-  <h2>EN SAVOIR PLUS</h2>
+cards.forEach(card => {
+  card.addEventListener('click', () => {
+    modal.style.display = 'flex';
+    modalImg.src = card.querySelector('img').src;
+  });
+});
 
-  <div class="about">
-    Bonjour moi c’est Design Foot 13.  
-    Je fais des affiches de football pour clubs et joueurs professionnels ou amateurs.  
-    N’hésite pas à me contacter pour une création !
-  </div>
-</section>
+function closeModal(){
+  modal.style.display = 'none';
+}
 
-<!-- FOOTER -->
-<footer>
-  <p>Suivez Design Foot 13</p>
-  <a href="https://www.instagram.com/design_foot_13" target="_blank">Instagram</a>
-  <a href="https://www.tiktok.com/@design_foot_13" target="_blank">TikTok</a>
-</footer>
+window.onclick = function(e){
+  if(e.target == modal) modal.style.display = 'none';
+}
+</script>
 
 </body>
 </html>
+
