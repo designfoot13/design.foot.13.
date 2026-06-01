@@ -869,12 +869,13 @@ footer p { color: #555; font-size: 0.8em; margin-top: 20px; }
 <div class="stats-bar">
   <div class="stat-item"><strong id="bar-abonnes">0</strong>Abonnés</div>
   <div class="stat-item"><strong id="bar-affiches">0</strong>Affiches</div>
+  <div class="stat-item"><strong id="bar-likes">0</strong>Likes</div>
   <div class="stat-item"><strong id="bar-collabs">0</strong>Collabs</div>
 </div>
  
 <!-- NAV -->
 <nav>
-  <a href="#carousel-section">Affiches</a>
+  <a href="#affiches-section" class="btn-glow">
   <a href="#stats-section">Stats</a>
   <a href="#collab-section">Collabs</a>
   <a href="#tarifs-section">Tarifs</a>
@@ -898,20 +899,7 @@ footer p { color: #555; font-size: 0.8em; margin-top: 20px; }
     </div>
   </div>
 </section>
- 
-<!-- CAROUSEL 3D SECTION -->
-<section id="carousel-section" class="fade-in">
-  <h2>🏆 MES AFFICHES</h2>
-  <div class="section-line"></div>
-  <div class="carousel-wrapper">
-    <div class="carousel-track" id="carousel-track"></div>
-  </div>
-  <div class="carousel-nav">
-    <button onclick="carouselMove(-1)">&#8592;</button>
-    <button onclick="carouselMove(1)">&#8594;</button>
-  </div>
-  <div class="carousel-dots" id="carousel-dots"></div>
-</section>
+
  
 <!-- ALL AFFICHES GRID -->
 <section id="affiches-section" class="fade-in">
@@ -926,11 +914,11 @@ footer p { color: #555; font-size: 0.8em; margin-top: 20px; }
   <div class="section-line"></div>
   <div class="stats-grid">
     <div class="stat-box">
-      <span class="stat-num" data-target="3000" data-suffix="">0</span>
+      <span class="stat-num" data-target="3071" data-suffix="">0</span>
       <span class="stat-label">Abonnés</span>
     </div>
     <div class="stat-box">
-      <span class="stat-num" data-target="21" data-suffix="">0</span>
+      <span class="stat-num" data-target="160" data-suffix="">0</span>
       <span class="stat-label">Affiches créées</span>
     </div>
     <div class="stat-box">
@@ -941,6 +929,9 @@ footer p { color: #555; font-size: 0.8em; margin-top: 20px; }
       <span class="stat-num" data-target="10" data-suffix="€">0</span>
       <span class="stat-label">Prix par affiche</span>
     </div>
+     <div class="stat-box">
+      <span class="stat-num" data-target="11044" data-suffix="">0</span>
+      <span class="stat-label">likes</span>
   </div>
 </section>
  
@@ -1143,10 +1134,11 @@ animateParticles();
  
 // ===== ANIMATED BAR COUNTERS =====
 function animateBarCounters() {
-  animateCount('bar-abonnes', 3071, 1500);
+animateCount('bar-abonnes', 3071, 1500);
   animateCount('bar-affiches', 160, 1200);
-  animateCount('bar-collabs', 23, 800);
-  animateCount('bar-likes', 1144, 1200);
+  animateCount('bar-likes', 11040, 1200);
+  animateCount('bar-collabs', 2, 800);
+}
 }
 function animateCount(id, target, duration) {
   const el = document.getElementById(id);
@@ -1162,97 +1154,7 @@ function animateCount(id, target, duration) {
 }
 setTimeout(animateBarCounters, 1000);
  
-// ===== CAROUSEL 3D =====
-let carouselIndex = 0;
-const carouselCount = images.length;
-const track = document.getElementById('carousel-track');
-const dotsContainer = document.getElementById('carousel-dots');
- 
-// Load likes from localStorage
-function getLikes() {
-  try { return JSON.parse(localStorage.getItem('df13_likes') || '{}'); } catch(e) { return {}; }
-}
-function saveLike(i, val) {
-  const l = getLikes(); l[i] = val;
-  try { localStorage.setItem('df13_likes', JSON.stringify(l)); } catch(e){}
-}
-function getLikeCounts() {
-  try { return JSON.parse(localStorage.getItem('df13_likes_counts') || '{}'); } catch(e){ return {}; }
-}
-function saveLikeCount(i, val) {
-  const l = getLikeCounts(); l[i] = val;
-  try { localStorage.setItem('df13_likes_counts', JSON.stringify(l)); } catch(e){}
-}
- 
-images.forEach((img, i) => {
-  const angle = (360 / carouselCount) * i;
-  const card = document.createElement('div');
-  card.className = 'carousel-card';
-  card.style.transform = `rotateY(${angle}deg) translateZ(${Math.max(400, carouselCount * 45)}px)`;
- 
-  const likes = getLikes();
-  const likeCounts = getLikeCounts();
-  const liked = likes[i];
-  const count = likeCounts[i] || Math.floor(Math.random() * 80 + 10);
-  if (!likeCounts[i]) saveLikeCount(i, count);
- 
-  card.innerHTML = `
-    <img src="${img.src}" alt="${img.name}" onerror="this.style.background='#111'; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22280%22 height=%22380%22><rect width=%22280%22 height=%22380%22 fill=%22%23111%22/><text x=%2250%25%22 y=%2250%25%22 font-size=%2260%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22>⚽</text></svg>'">
-    <div class="card-holo-overlay"></div>
-    <div class="card-shine"></div>
-    <div class="card-footer">
-      <button class="like-btn ${liked ? 'liked' : ''}" data-index="${i}" onclick="toggleLike(event,${i})">
-        ${liked ? '❤️' : '🤍'} <span class="like-count">${count}</span>
-      </button>
-      <span style="font-size:0.7em; color:#aaa">${img.name}</span>
-    </div>
-  `;
-  card.addEventListener('click', (e) => {
-    if (e.target.closest('.like-btn')) return;
-    openModal(i);
-  });
-  track.appendChild(card);
- 
-  const dot = document.createElement('div');
-  dot.className = 'dot' + (i === 0 ? ' active' : '');
-  dot.onclick = () => goToCarousel(i);
-  dotsContainer.appendChild(dot);
-});
- 
-function toggleLike(e, i) {
-  e.stopPropagation();
-  const btn = e.currentTarget;
-  const likes = getLikes();
-  const counts = getLikeCounts();
-  const wasLiked = likes[i];
-  const newLiked = !wasLiked;
-  const newCount = (counts[i] || 0) + (newLiked ? 1 : -1);
-  saveLike(i, newLiked);
-  saveLikeCount(i, newCount);
-  btn.className = 'like-btn ' + (newLiked ? 'liked' : '');
-  btn.innerHTML = `${newLiked ? '❤️' : '🤍'} <span class="like-count">${newCount}</span>`;
- 
-  if (newLiked) {
-    const burst = document.createElement('div');
-    burst.className = 'heart-burst';
-    burst.textContent = '❤️';
-    btn.appendChild(burst);
-    setTimeout(() => burst.remove(), 900);
-    if (newCount % 50 === 0) launchConfetti();
-  }
-}
- 
-function goToCarousel(idx) {
-  carouselIndex = idx;
-  const angle = -(360 / carouselCount) * carouselIndex;
-  track.style.transform = `rotateY(${angle}deg)`;
-  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === carouselIndex));
-}
-function carouselMove(dir) {
-  carouselIndex = ((carouselIndex + dir) % carouselCount + carouselCount) % carouselCount;
-  goToCarousel(carouselIndex);
-}
-setInterval(() => carouselMove(1), 4000);
+
  
 // ===== FUT GRID =====
 const futGrid = document.getElementById('fut-grid');
