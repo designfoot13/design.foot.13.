@@ -2,336 +2,1449 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Design Foot 13 - Ultra Premium</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600;700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600;700&family=Montserrat:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
-
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:
-    radial-gradient(circle at top, #1aff6f22, transparent 45%),
-    radial-gradient(circle at bottom, #00c3ff22, transparent 40%),
-    linear-gradient(180deg,#050505,#0b0b0b);
-  color:white;
-  font-family:'Montserrat',sans-serif;
-  overflow-x:hidden;
-  scroll-behavior:smooth;
+:root {
+  --green: #1aff6f;
+  --blue: #00c3ff;
+  --gold: #ffd700;
+  --dark: #050505;
+  --card-w: 280px;
 }
-
-/* CURSOR GLOW */
-body::after{
-  content:"";
-  position:fixed;
-  width:300px;
-  height:300px;
-  background:radial-gradient(circle,#1aff6f33,transparent 60%);
-  pointer-events:none;
-  transform:translate(-50%,-50%);
-  top:var(--y,50%);
-  left:var(--x,50%);
-  transition:0.05s;
-  z-index:0;
+ 
+* { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+html { scroll-behavior: smooth; }
+ 
+body {
+  background: var(--dark);
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
 }
-
-.stats-bar{
-  position:fixed;
-  top:0;
-  width:100%;
-  background:#000000dd;
-  display:flex;
-  justify-content:center;
-  gap:60px;
-  padding:12px;
-  z-index:9999;
-  border-bottom:1px solid #1aff6f55;
+ 
+/* ===== CUSTOM CURSOR ===== */
+#cursor {
+  position: fixed;
+  width: 20px; height: 20px;
+  background: var(--green);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s, width 0.2s, height 0.2s, opacity 0.2s;
+  mix-blend-mode: difference;
 }
-
-.stats-bar strong{
-  color:#1aff6f;
-  font-size:1.3em;
+#cursor-trail {
+  position: fixed;
+  width: 40px; height: 40px;
+  border: 1px solid var(--green);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: left 0.15s ease, top 0.15s ease;
+  opacity: 0.5;
 }
-
-/* NAV */
-nav{
-  position:fixed;
-  top:55px;
-  width:100%;
-  display:flex;
-  justify-content:center;
-  gap:30px;
-  z-index:9998;
+body:hover #cursor { opacity: 1; }
+ 
+/* ===== CANVAS PARTICLES ===== */
+#particles-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
 }
-nav a{
-  color:#fff;
-  text-decoration:none;
-  opacity:0.7;
-  transition:0.3s;
+ 
+/* ===== FOOTBALL ANIMATION ===== */
+#football {
+  position: fixed;
+  font-size: 3em;
+  pointer-events: none;
+  z-index: 9990;
+  animation: footballTraverse 12s linear infinite;
+  top: 30%;
+  filter: drop-shadow(0 0 10px var(--green));
 }
-nav a:hover{color:#1aff6f; opacity:1}
-
-header{
-  height:90vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  margin-top:60px;
-  background:
-    radial-gradient(circle at center,#1aff6f11,transparent 60%),
-    linear-gradient(180deg,#000000cc,#000000);
+@keyframes footballTraverse {
+  0%   { left: -80px; top: 20%; transform: rotate(0deg); }
+  25%  { top: 70%; transform: rotate(360deg); }
+  50%  { top: 15%; transform: rotate(720deg); }
+  75%  { top: 80%; transform: rotate(1080deg); }
+  100% { left: 110vw; top: 25%; transform: rotate(1440deg); }
 }
-
-header h1{
-  font-family:'Teko',sans-serif;
-  font-size:6em;
-  margin:0;
-  text-shadow:0 0 40px #1aff6f;
-  animation:glow 2s infinite alternate;
+ 
+/* ===== STATS BAR ===== */
+.stats-bar {
+  position: fixed;
+  top: 0; width: 100%;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  padding: 10px;
+  z-index: 9999;
+  border-bottom: 1px solid #1aff6f44;
+  backdrop-filter: blur(10px);
 }
-
-@keyframes glow{
-  from{filter:drop-shadow(0 0 5px #1aff6f)}
-  to{filter:drop-shadow(0 0 25px #1aff6f)}
+.stat-item { text-align: center; font-size: 0.75em; color: #aaa; }
+.stat-item strong { color: var(--green); font-size: 1.5em; font-family: 'Teko', sans-serif; display: block; }
+ 
+/* ===== NAV ===== */
+nav {
+  position: fixed;
+  top: 55px; width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  z-index: 9998;
+  padding: 10px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
 }
-
-section{
-  padding:100px 8%;
-  position:relative;
-  z-index:1;
+nav a {
+  color: #fff;
+  text-decoration: none;
+  opacity: 0.7;
+  transition: 0.3s;
+  font-size: 0.85em;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
-
-h2{
-  font-family:'Teko',sans-serif;
-  font-size:3em;
-  text-align:center;
-  margin-bottom:60px;
+nav a:hover { color: var(--green); opacity: 1; text-shadow: 0 0 20px var(--green); }
+ 
+/* ===== SOUND BUTTON ===== */
+#sound-btn {
+  position: fixed;
+  bottom: 30px; right: 30px;
+  width: 55px; height: 55px;
+  background: linear-gradient(135deg, var(--green), var(--blue));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  z-index: 9999;
+  font-size: 1.4em;
+  box-shadow: 0 0 25px var(--green);
+  border: none;
+  color: #000;
+  transition: transform 0.3s;
+  animation: pulse-btn 2s infinite;
 }
-
-.gallery{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:30px;
+@keyframes pulse-btn {
+  0%, 100% { box-shadow: 0 0 20px var(--green); }
+  50% { box-shadow: 0 0 50px var(--green), 0 0 80px var(--blue); }
 }
-
-.card{
-  overflow:hidden;
-  border-radius:18px;
-  box-shadow:0 25px 60px rgba(0,0,0,0.8);
-  transition:0.4s;
-  cursor:pointer;
-  transform-style:preserve-3d;
+#sound-btn:hover { transform: scale(1.15); }
+ 
+/* ===== HERO VIDEO ===== */
+#hero {
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  z-index: 1;
 }
-
-.card img{
-  width:100%;
-  display:block;
-  transition:0.4s;
+#hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.25;
+  z-index: -1;
 }
-
-.card:hover{
-  transform:scale(1.05) rotateX(5deg) rotateY(-5deg);
-  box-shadow:0 0 40px #1aff6f;
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, #1aff6f09 0%, #000000cc 70%);
+  z-index: -1;
 }
-
-/* MODAL */
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.92);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:10000;
+.hero-title {
+  font-family: 'Teko', sans-serif;
+  font-size: clamp(3em, 10vw, 8em);
+  line-height: 0.9;
+  letter-spacing: 4px;
+  text-shadow: 0 0 60px var(--green), 0 0 120px var(--green);
+  animation: glowPulse 2s infinite alternate;
+  z-index: 2;
 }
-
-.modal-content{
-  width:90%;
-  max-width:900px;
-  max-height:90vh;
-  animation:flip 0.7s ease;
+@keyframes glowPulse {
+  from { filter: drop-shadow(0 0 10px var(--green)); }
+  to   { filter: drop-shadow(0 0 40px var(--green)) drop-shadow(0 0 80px var(--blue)); }
 }
-
-.modal-content img{
-  width:100%;
-  max-height:90vh;
-  object-fit:contain;
-  border-radius:15px;
-  box-shadow:0 0 50px #1aff6f;
+.hero-sub {
+  font-size: 1em;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: #aaa;
+  margin-top: 15px;
 }
-
-@keyframes flip{
-  from{transform:rotateY(90deg) scale(0.6); opacity:0}
-  to{transform:rotateY(0deg) scale(1); opacity:1}
+.hero-cta {
+  margin-top: 40px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
-
-.close{
-  position:absolute;
-  top:20px;
-  right:30px;
-  font-size:40px;
-  color:#1aff6f;
-  cursor:pointer;
+.btn-glow {
+  padding: 14px 36px;
+  background: linear-gradient(90deg, var(--green), var(--blue));
+  color: #000;
+  font-weight: 700;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 0.9em;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: 0.3s;
+  border: none;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
 }
-
-/* COLLAB FIX VISIBILITY */
-.collab-wrapper{display:flex;justify-content:center;gap:100px;flex-wrap:wrap}
-.collab-item img{width:150px;height:150px;border-radius:50%;object-fit:cover;border:3px solid #1aff6f}
-
-/* CTA */
-.cta a{
-  display:inline-block;
-  padding:18px 45px;
-  background:linear-gradient(90deg,#1aff6f,#00c3ff);
-  color:#000;
-  font-weight:700;
-  border-radius:50px;
-  text-decoration:none;
-  transition:0.3s;
+.btn-glow:hover { transform: scale(1.1); box-shadow: 0 0 40px var(--green); }
+.btn-outline {
+  padding: 14px 36px;
+  background: transparent;
+  color: var(--green);
+  font-weight: 700;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 0.9em;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: 0.3s;
+  border: 2px solid var(--green);
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
 }
-.cta a:hover{transform:scale(1.1)}
-
-footer{
-  background:#000;
-  text-align:center;
-  padding:60px 20px;
+.btn-outline:hover { background: var(--green); color: #000; box-shadow: 0 0 30px var(--green); }
+ 
+/* ===== SECTIONS ===== */
+section {
+  padding: 120px 6%;
+  position: relative;
+  z-index: 1;
 }
-
-footer a{color:#1aff6f;margin:0 15px;text-decoration:none}
-
-/* FADE IN */
-.fade{
-  opacity:0;
-  transform:translateY(40px);
-  transition:1s;
+h2 {
+  font-family: 'Teko', sans-serif;
+  font-size: clamp(2em, 5vw, 3.5em);
+  text-align: center;
+  margin-bottom: 20px;
+  letter-spacing: 3px;
 }
-.fade.show{
-  opacity:1;
-  transform:translateY(0);
+.section-line {
+  width: 80px; height: 3px;
+  background: linear-gradient(90deg, var(--green), var(--blue));
+  margin: 0 auto 60px;
+  border-radius: 2px;
 }
-
+ 
+/* ===== CAROUSEL 3D NETFLIX ===== */
+#carousel-section { overflow: hidden; }
+.carousel-wrapper {
+  perspective: 1200px;
+  position: relative;
+  height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.carousel-track {
+  position: relative;
+  width: var(--card-w);
+  height: 380px;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.23,1,0.32,1);
+}
+.carousel-card {
+  position: absolute;
+  width: var(--card-w);
+  height: 380px;
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.5s;
+  backface-visibility: hidden;
+}
+.carousel-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.card-holo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, 
+    rgba(26,255,111,0.15) 0%, 
+    rgba(0,195,255,0.15) 50%, 
+    rgba(255,215,0,0.1) 100%);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  opacity: 0;
+  transition: 0.3s;
+}
+.carousel-card:hover .card-holo-overlay { opacity: 1; }
+.card-shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.15) 50%, transparent 60%);
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+.carousel-card:hover .card-shine {
+  animation: shine 0.8s ease forwards;
+}
+@keyframes shine {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(200%); }
+}
+ 
+/* LIKES */
+.card-footer {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 15px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.9));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.like-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.4em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  transition: 0.2s;
+  position: relative;
+}
+.like-btn.liked { color: #ff4466; }
+.like-btn:active { transform: scale(1.4); }
+.like-count { font-size: 0.7em; font-family: 'Montserrat', sans-serif; font-weight: 700; }
+.heart-burst {
+  position: absolute;
+  top: -30px; left: 0;
+  font-size: 1.5em;
+  animation: heartFloat 0.8s ease forwards;
+  pointer-events: none;
+}
+@keyframes heartFloat {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-50px) scale(1.5); }
+}
+ 
+/* Carousel nav */
+.carousel-nav {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+.carousel-nav button {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  border: 2px solid var(--green);
+  background: transparent;
+  color: var(--green);
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.carousel-nav button:hover {
+  background: var(--green);
+  color: #000;
+  box-shadow: 0 0 20px var(--green);
+}
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+.dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #333;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.dot.active { background: var(--green); box-shadow: 0 0 10px var(--green); width: 24px; border-radius: 4px; }
+ 
+/* ===== FUT HOLOGRAPHIC GRID ===== */
+#affiches-section .fut-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 25px;
+}
+.fut-card {
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: 0.4s;
+  background: linear-gradient(135deg, #111, #1a1a1a);
+  border: 1px solid #1aff6f22;
+  transform-style: preserve-3d;
+}
+.fut-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, 
+    rgba(26,255,111,0) 0%, 
+    rgba(0,195,255,0.08) 50%,
+    rgba(255,215,0,0) 100%);
+  opacity: 0;
+  transition: 0.4s;
+  z-index: 1;
+  pointer-events: none;
+}
+.fut-card::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, var(--green), var(--blue), var(--gold), var(--green));
+  border-radius: 17px;
+  opacity: 0;
+  transition: 0.4s;
+  z-index: -1;
+  background-size: 300%;
+  animation: holoBorder 3s linear infinite;
+}
+@keyframes holoBorder {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.fut-card:hover::before { opacity: 1; }
+.fut-card:hover::after { opacity: 0.7; }
+.fut-card:hover { transform: translateY(-8px) rotateX(5deg); box-shadow: 0 20px 60px rgba(26,255,111,0.3); }
+.fut-card img { width: 100%; display: block; transition: 0.4s; }
+.fut-card:hover img { transform: scale(1.05); }
+.fut-badge {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: linear-gradient(135deg, var(--gold), #ff8c00);
+  color: #000;
+  font-size: 0.6em;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  z-index: 2;
+}
+ 
+/* ===== MODAL ===== */
+#modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100000;
+  backdrop-filter: blur(20px);
+}
+#modal.active { display: flex; }
+.modal-inner {
+  position: relative;
+  width: 90%;
+  max-width: 900px;
+  animation: modalFlip 0.6s cubic-bezier(0.23,1,0.32,1);
+}
+@keyframes modalFlip {
+  from { transform: rotateY(90deg) scale(0.5); opacity: 0; }
+  to   { transform: rotateY(0deg) scale(1); opacity: 1; }
+}
+#modal-img {
+  width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 18px;
+  box-shadow: 0 0 80px var(--green), 0 0 150px rgba(26,255,111,0.3);
+  display: block;
+}
+.modal-close {
+  position: absolute;
+  top: -50px; right: 0;
+  font-size: 2.5em;
+  color: var(--green);
+  cursor: pointer;
+  background: none;
+  border: none;
+  line-height: 1;
+  transition: 0.3s;
+}
+.modal-close:hover { transform: rotate(90deg) scale(1.2); }
+.modal-nav {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+.modal-nav button {
+  padding: 10px 25px;
+  border: 1px solid var(--green);
+  background: transparent;
+  color: var(--green);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-family: 'Montserrat', sans-serif;
+}
+.modal-nav button:hover { background: var(--green); color: #000; }
+ 
+/* ===== STATS COUNTERS ===== */
+#stats-section {
+  background: radial-gradient(ellipse at center, #1aff6f08, transparent 70%);
+  border-top: 1px solid #1aff6f11;
+  border-bottom: 1px solid #1aff6f11;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.stat-box {
+  text-align: center;
+  padding: 30px;
+  border-radius: 16px;
+  background: rgba(26,255,111,0.04);
+  border: 1px solid rgba(26,255,111,0.15);
+  transition: 0.3s;
+}
+.stat-box:hover { border-color: var(--green); box-shadow: 0 0 30px rgba(26,255,111,0.2); transform: translateY(-5px); }
+.stat-num {
+  font-family: 'Teko', sans-serif;
+  font-size: 3.5em;
+  color: var(--green);
+  display: block;
+  line-height: 1;
+}
+.stat-label { font-size: 0.75em; color: #aaa; letter-spacing: 2px; text-transform: uppercase; margin-top: 8px; display: block; }
+ 
+/* ===== COLLAB ===== */
+.collab-grid {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+.collab-card {
+  text-align: center;
+  padding: 40px 30px;
+  border-radius: 24px;
+  background: rgba(26,255,111,0.04);
+  border: 1px solid rgba(26,255,111,0.2);
+  transition: 0.4s;
+  min-width: 200px;
+}
+.collab-card:hover { transform: translateY(-10px); box-shadow: 0 20px 60px rgba(26,255,111,0.2); border-color: var(--green); }
+.collab-card img {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--green);
+  box-shadow: 0 0 25px rgba(26,255,111,0.4);
+  margin-bottom: 15px;
+}
+.collab-card h3 { font-size: 1.1em; margin-bottom: 5px; }
+.collab-card span { font-size: 0.8em; color: var(--green); }
+ 
+/* ===== TARIFS ===== */
+.tarifs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 30px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.tarif-card {
+  border-radius: 24px;
+  padding: 40px 30px;
+  text-align: center;
+  border: 1px solid rgba(26,255,111,0.2);
+  background: rgba(26,255,111,0.03);
+  transition: 0.4s;
+  position: relative;
+  overflow: hidden;
+}
+.tarif-card.featured {
+  border-color: var(--green);
+  background: rgba(26,255,111,0.08);
+  box-shadow: 0 0 40px rgba(26,255,111,0.2);
+}
+.tarif-card.featured::before {
+  content: '⭐ POPULAIRE';
+  position: absolute;
+  top: 15px; right: -30px;
+  background: linear-gradient(90deg, var(--green), var(--blue));
+  color: #000;
+  font-size: 0.6em;
+  font-weight: 700;
+  padding: 5px 40px;
+  transform: rotate(35deg);
+  letter-spacing: 1px;
+}
+.tarif-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(26,255,111,0.2); }
+.tarif-price {
+  font-family: 'Teko', sans-serif;
+  font-size: 4em;
+  color: var(--green);
+  line-height: 1;
+}
+.tarif-price sup { font-size: 0.4em; vertical-align: top; margin-top: 15px; }
+.tarif-name { font-size: 0.85em; letter-spacing: 3px; text-transform: uppercase; color: #aaa; margin-bottom: 25px; display: block; margin-top: 8px; }
+.tarif-features { list-style: none; text-align: left; margin-bottom: 30px; }
+.tarif-features li { padding: 8px 0; font-size: 0.85em; color: #ccc; border-bottom: 1px solid #1aff6f11; display: flex; align-items: center; gap: 10px; }
+.tarif-features li::before { content: '✓'; color: var(--green); font-weight: 700; }
+ 
+/* ===== CONTACT ===== */
+.contact-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+.contact-wrapper p { color: #aaa; margin-bottom: 40px; line-height: 1.8; }
+.contact-links {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.85em;
+  letter-spacing: 1px;
+  transition: 0.3s;
+  border: 1px solid;
+}
+.social-link.insta { color: #e1306c; border-color: #e1306c; }
+.social-link.insta:hover { background: #e1306c; color: #fff; box-shadow: 0 0 30px #e1306c55; }
+.social-link.tiktok { color: #69c9d0; border-color: #69c9d0; }
+.social-link.tiktok:hover { background: #69c9d0; color: #000; box-shadow: 0 0 30px #69c9d055; }
+.social-link.mail { color: var(--green); border-color: var(--green); }
+.social-link.mail:hover { background: var(--green); color: #000; box-shadow: 0 0 30px rgba(26,255,111,0.5); }
+ 
+/* ===== SECRET MODE ===== */
+#secret-mode {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 999999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+#secret-mode.active { display: flex; }
+#secret-mode h2 {
+  font-family: 'Teko', sans-serif;
+  font-size: 5em;
+  color: var(--gold);
+  animation: secretGlow 1s infinite alternate;
+}
+@keyframes secretGlow {
+  from { text-shadow: 0 0 20px var(--gold); }
+  to   { text-shadow: 0 0 80px var(--gold), 0 0 150px #ff8c00; }
+}
+.konami-hint {
+  position: fixed;
+  bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65em;
+  color: #333;
+  letter-spacing: 2px;
+  transition: color 0.3s;
+  z-index: 9997;
+}
+.konami-hint:hover { color: #555; }
+#konami-progress {
+  position: fixed;
+  bottom: 40px; left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  z-index: 9997;
+}
+.konami-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #222;
+  transition: 0.2s;
+}
+.konami-dot.done { background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+ 
+/* ===== TIKTOK MODE ===== */
+.tiktok-trigger {
+  position: fixed;
+  left: 20px; bottom: 30px;
+  background: #69c9d0;
+  border: none;
+  color: #000;
+  padding: 10px 18px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.8em;
+  z-index: 9999;
+  transition: 0.3s;
+}
+.tiktok-trigger:hover { transform: scale(1.1); box-shadow: 0 0 20px #69c9d0; }
+body.tiktok-mode {
+  overflow: hidden;
+}
+body.tiktok-mode #tiktok-feed {
+  display: flex;
+}
+#tiktok-feed {
+  display: none;
+  position: fixed;
+  inset: 0;
+  flex-direction: column;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  z-index: 99999;
+  background: #000;
+}
+.tiktok-slide {
+  min-height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.tiktok-slide img {
+  width: 100%;
+  height: 100vh;
+  object-fit: contain;
+}
+.tiktok-info {
+  position: absolute;
+  bottom: 80px; left: 20px;
+  z-index: 2;
+}
+.tiktok-info h3 { font-family: 'Teko', sans-serif; font-size: 1.8em; }
+.tiktok-actions {
+  position: absolute;
+  bottom: 80px; right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  z-index: 2;
+}
+.tiktok-action-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.8em;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.tiktok-action-btn span { font-size: 0.35em; font-family: 'Montserrat', sans-serif; }
+#tiktok-close {
+  position: fixed;
+  top: 20px; right: 20px;
+  z-index: 100000;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85em;
+}
+ 
+/* ===== CONFETTI ===== */
+.confetti-piece {
+  position: fixed;
+  width: 10px; height: 10px;
+  pointer-events: none;
+  z-index: 999998;
+  animation: confettiFall linear forwards;
+  border-radius: 2px;
+}
+@keyframes confettiFall {
+  0%   { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+ 
+/* ===== FOOTER ===== */
+footer {
+  background: #000;
+  border-top: 1px solid #1aff6f11;
+  text-align: center;
+  padding: 60px 20px;
+  z-index: 1;
+  position: relative;
+}
+.footer-logo {
+  font-family: 'Teko', sans-serif;
+  font-size: 2.5em;
+  color: var(--green);
+  letter-spacing: 4px;
+  margin-bottom: 20px;
+}
+footer p { color: #555; font-size: 0.8em; margin-top: 20px; }
+ 
+/* ===== FADE ANIMATIONS ===== */
+.fade-in {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+ 
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .stats-bar { gap: 20px; font-size: 0.8em; }
+  nav { gap: 15px; }
+  nav a { font-size: 0.75em; }
+  .hero-title { font-size: 3.5em; }
+  .carousel-card { height: 300px; }
+  .tiktok-trigger { display: block; }
+}
+@media (min-width: 769px) {
+  .tiktok-trigger { display: none; }
+}
+ 
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: var(--green); border-radius: 2px; }
 </style>
 </head>
-
 <body>
-
-<div class="stats-bar"><div><strong>3000</strong><br>Abonnés</div></div>
-
+ 
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-trail"></div>
+ 
+<!-- PARTICLES -->
+<canvas id="particles-canvas"></canvas>
+ 
+<!-- FOOTBALL -->
+<div id="football">⚽</div>
+ 
+<!-- SOUND -->
+<button id="sound-btn" title="Ambiance stade" onclick="toggleSound()">🔊</button>
+ 
+<!-- TIKTOK TRIGGER (mobile) -->
+<button class="tiktok-trigger" onclick="openTiktok()">📱 Mode TikTok</button>
+ 
+<!-- KONAMI HINT -->
+<div class="konami-hint">↑↑↓↓←→←→BA</div>
+<div id="konami-progress"></div>
+ 
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item"><strong id="bar-abonnes">0</strong>Abonnés</div>
+  <div class="stat-item"><strong id="bar-affiches">0</strong>Affiches</div>
+  <div class="stat-item"><strong id="bar-collabs">0</strong>Collabs</div>
+</div>
+ 
+<!-- NAV -->
 <nav>
-  <a href="#affiches">Affiches</a>
-  <a href="#collab">Collaboration</a>
-  <a href="#contact">Contact</a>
+  <a href="#carousel-section">Affiches</a>
+  <a href="#stats-section">Stats</a>
+  <a href="#collab-section">Collabs</a>
+  <a href="#tarifs-section">Tarifs</a>
+  <a href="#contact-section">Contact</a>
 </nav>
-
-<header>
-  <div>
-    <h1>DESIGN FOOT 13</h1>
-    <p>Affiches football • Créations premium</p>
+ 
+<!-- HERO -->
+<section id="hero">
+  <!-- Vidéo stade en background -->
+  <video id="hero-video" autoplay muted loop playsinline poster="">
+    <!-- Remplace src par une vraie vidéo stade -->
+    <source src="stade.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+  <div style="position:relative; z-index:2;">
+    <div class="hero-title">DESIGN<br>FOOT 13</div>
+    <p class="hero-sub">Affiches Football • Créations Premium</p>
+    <div class="hero-cta">
+      <a href="#carousel-section" class="btn-glow">Voir les affiches</a>
+      <a href="#contact-section" class="btn-outline">Commander 10€</a>
+    </div>
   </div>
-</header>
-
-<section id="affiches" class="fade">
-<h2>MES AFFICHES</h2>
-<div class="gallery">
-  <div class="card"><img src="trapel-fc.jpg.PNG"></div>
-    <div class="card"><img src="om.jpg.PNG"></div>
-    <div class="card"><img src="tottenham.jpg.PNG"></div>
-    <div class="card"><img src="manchester-united.jpg.PNG"></div>
-    <div class="card"><img src="arsenal.jpg.JPG"></div>
-    <div class="card"><img src="sofiane-diop.jpg.PNG"></div>
-    <div class="card"><img src="liverpool-om.jpg.PNG"></div>
-    <div class="card"><img src="bayeux-om.jpg.jpg"></div>
-    <div class="card"><img src="angers-om.jpg.jpeg"></div>
-    <div class="card"><img src="manchester-derby.jpg.png"></div>
-    <div class="card"><img src="om-nantes.jpg.png"></div>
-  <div class="card"><img src="psg-sacre.png.png"></div>
-    <div class="card"><img src="bresil.png.jpeg"></div>
-    <div class="card"><img src="lewandowski.png.png"></div>
-    <div class="card"><img src="dylan-biaka.png.jpeg"></div>
-    <div class="card"><img src="clasico.png.png"></div>
-    <div class="card"><img src="fleurynho.png.png"></div>
-    <div class="card"><img src="coupe-du-monde.png.jpeg"></div>
-    <div class="card"><img src="city.png.png"></div>
-    <div class="card"><img src="rc-lens.png.png"></div>
-    <div class="card"><img src="strasbourg.png.png"></div>
-
-</div>
 </section>
-
-<section id="collab" class="fade">
-<h2>COLLABORATIONS</h2>
-<div class="collab-wrapper">
-<div class="collab-item">
-<img src="om-logo.png.jpeg">
-<p>Olympique de Marseille</p>
-<span>vs FC Bayeux</span>
-</div>
-<div class="collab-item">
-<img src="dylan-biaka-photo.png.jpeg">
-<p>Dylan Biaka</p>
-<span>UFT</span>
-</div>
-</div>
+ 
+<!-- CAROUSEL 3D SECTION -->
+<section id="carousel-section" class="fade-in">
+  <h2>🏆 MES AFFICHES</h2>
+  <div class="section-line"></div>
+  <div class="carousel-wrapper">
+    <div class="carousel-track" id="carousel-track"></div>
+  </div>
+  <div class="carousel-nav">
+    <button onclick="carouselMove(-1)">&#8592;</button>
+    <button onclick="carouselMove(1)">&#8594;</button>
+  </div>
+  <div class="carousel-dots" id="carousel-dots"></div>
 </section>
-
-<section id="contact" class="cta fade">
-<h2>CONTACT</h2>
-<p>Affiche : <strong>10€</strong> (négociation / abonnement possible)</p>
-<a href="mailto:designfoot13@gmail.com">ME CONTACTER</a>
+ 
+<!-- ALL AFFICHES GRID -->
+<section id="affiches-section" class="fade-in">
+  <h2>✨ GALERIE COMPLÈTE</h2>
+  <div class="section-line"></div>
+  <div class="fut-grid" id="fut-grid"></div>
 </section>
-
-<section class="fade">
-<h2>EN SAVOIR PLUS</h2>
-<div style="max-width:800px;margin:auto;text-align:center">
-Design Foot 13 crée des affiches football pour clubs et joueurs.
-</div>
+ 
+<!-- STATS ANIMÉS -->
+<section id="stats-section" class="fade-in">
+  <h2>📈 EN CHIFFRES</h2>
+  <div class="section-line"></div>
+  <div class="stats-grid">
+    <div class="stat-box">
+      <span class="stat-num" data-target="3000" data-suffix="">0</span>
+      <span class="stat-label">Abonnés</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num" data-target="21" data-suffix="">0</span>
+      <span class="stat-label">Affiches créées</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num" data-target="2" data-suffix="">0</span>
+      <span class="stat-label">Collaborations</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num" data-target="10" data-suffix="€">0</span>
+      <span class="stat-label">Prix par affiche</span>
+    </div>
+  </div>
 </section>
-
+ 
+<!-- COLLABORATIONS -->
+<section id="collab-section" class="fade-in">
+  <h2>🤝 COLLABORATIONS</h2>
+  <div class="section-line"></div>
+  <div class="collab-grid">
+    <div class="collab-card">
+      <img src="om-logo.png.jpeg" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22><circle cx=%2260%22 cy=%2260%22 r=%2260%22 fill=%22%231a1a2e%22/><text x=%2250%25%22 y=%2255%25%22 font-size=%2240%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22>⚽</text></svg>'">
+      <h3>Olympique de Marseille</h3>
+      <span>vs FC Bayeux</span>
+    </div>
+    <div class="collab-card">
+      <img src="dylan-biaka-photo.png.jpeg" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22><circle cx=%2260%22 cy=%2260%22 r=%2260%22 fill=%22%231a2e1a%22/><text x=%2250%25%22 y=%2255%25%22 font-size=%2240%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22>🏃</text></svg>'">
+      <h3>Dylan Biaka</h3>
+      <span>UFT</span>
+    </div>
+  </div>
+</section>
+ 
+<!-- TARIFS -->
+<section id="tarifs-section" class="fade-in">
+  <h2>💰 TARIFS</h2>
+  <div class="section-line"></div>
+  <div class="tarifs-grid">
+    <div class="tarif-card">
+      <div class="tarif-price"><sup>€</sup>5</div>
+      <span class="tarif-name">Basique</span>
+      <ul class="tarif-features">
+        <li>1 affiche simple</li>
+        <li>Format JPG</li>
+        <li>1 retouche incluse</li>
+      </ul>
+      <a href="mailto:designfoot13@gmail.com" class="btn-outline" style="display:inline-block;">Commander</a>
+    </div>
+    <div class="tarif-card featured">
+      <div class="tarif-price"><sup>€</sup>10</div>
+      <span class="tarif-name">Premium</span>
+      <ul class="tarif-features">
+        <li>1 affiche premium</li>
+        <li>Format HD + PNG</li>
+        <li>3 retouches incluses</li>
+        <li>Livraison rapide</li>
+      </ul>
+      <a href="mailto:designfoot13@gmail.com" class="btn-glow" style="display:inline-block;">Commander</a>
+    </div>
+    <div class="tarif-card">
+      <div class="tarif-price" style="color:var(--gold)">?€</div>
+      <span class="tarif-name">Pack Club</span>
+      <ul class="tarif-features">
+        <li>Tarif négociable</li>
+        <li>Contrat abonnement</li>
+        <li>Affiches illimitées</li>
+        <li>Support prioritaire</li>
+      </ul>
+      <a href="mailto:designfoot13@gmail.com" class="btn-outline" style="display:inline-block; border-color: var(--gold); color: var(--gold);">Négocier</a>
+    </div>
+  </div>
+</section>
+ 
+<!-- CONTACT -->
+<section id="contact-section" class="fade-in">
+  <h2>📧 CONTACT</h2>
+  <div class="section-line"></div>
+  <div class="contact-wrapper">
+    <p>Tu veux une affiche personnalisée pour ton club, ton joueur préféré ou un événement spécial ? Contacte-moi directement, je réponds vite !</p>
+    <a href="mailto:designfoot13@gmail.com" class="btn-glow" style="display:inline-block; font-size:1em; padding: 18px 50px;">✉️ designfoot13@gmail.com</a>
+    <div class="contact-links">
+      <a href="#" class="social-link insta">📸 Instagram</a>
+      <a href="#" class="social-link tiktok">🎵 TikTok</a>
+    </div>
+  </div>
+</section>
+ 
+<!-- FOOTER -->
 <footer>
-<p>Suivez-moi</p>
-<a href="#">Instagram</a>
-<a href="#">TikTok</a>
+  <div class="footer-logo">DESIGN FOOT 13</div>
+  <p>Affiches football premium · Depuis 2024</p>
+  <p style="margin-top:15px;">Made with ⚽ &amp; 💚</p>
 </footer>
-
+ 
 <!-- MODAL -->
-<div class="modal" id="modal">
-  <span class="close" onclick="closeModal()">×</span>
-  <div class="modal-content">
-    <img id="modalImg">
+<div id="modal">
+  <div class="modal-inner">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <img id="modal-img" src="" alt="">
+    <div class="modal-nav">
+      <button onclick="modalNav(-1)">◀ Précédente</button>
+      <button onclick="modalNav(1)">Suivante ▶</button>
+    </div>
   </div>
 </div>
-
+ 
+<!-- SECRET MODE -->
+<div id="secret-mode">
+  <h2>🏆 MODE SECRET ACTIVÉ 🏆</h2>
+  <p style="color: var(--gold); font-size:1.2em; margin-top:20px;">Tu as trouvé le code Konami !</p>
+  <p style="color:#aaa; margin-top:10px;">Design Foot 13 — Le meilleur créateur d'affiches football</p>
+  <button class="btn-glow" style="margin-top:40px;" onclick="closeSecret()">Continuer ✨</button>
+</div>
+ 
+<!-- TIKTOK MODE -->
+<div id="tiktok-feed">
+  <button id="tiktok-close" onclick="closeTiktok()">✕ Fermer</button>
+</div>
+ 
+<!-- AUDIO -->
+<audio id="stade-audio" loop>
+  <source src="stade.mp3" type="audio/mpeg">
+</audio>
+ 
 <script>
-const cards=document.querySelectorAll('.card');
-const modal=document.getElementById('modal');
-const img=document.getElementById('modalImg');
-
-cards.forEach(c=>{
-  c.addEventListener('click',()=>{
-    modal.style.display='flex';
-    img.src=c.querySelector('img').src;
+// ===== DATA =====
+const images = [
+  {src:"trapel-fc.jpg.PNG", name:"Trapel FC"},
+  {src:"om.jpg.PNG", name:"Olympique de Marseille"},
+  {src:"tottenham.jpg.PNG", name:"Tottenham Hotspur"},
+  {src:"manchester-united.jpg.PNG", name:"Manchester United"},
+  {src:"arsenal.jpg.JPG", name:"Arsenal FC"},
+  {src:"sofiane-diop.jpg.PNG", name:"Sofiane Diop"},
+  {src:"liverpool-om.jpg.PNG", name:"Liverpool vs OM"},
+  {src:"bayeux-om.jpg.jpg", name:"Bayeux vs OM"},
+  {src:"angers-om.jpg.jpeg", name:"Angers vs OM"},
+  {src:"manchester-derby.jpg.png", name:"Manchester Derby"},
+  {src:"om-nantes.jpg.png", name:"OM vs Nantes"},
+  {src:"psg-sacre.png.png", name:"PSG Sacré"},
+  {src:"bresil.png.jpeg", name:"Brésil"},
+  {src:"lewandowski.png.png", name:"Lewandowski"},
+  {src:"dylan-biaka.png.jpeg", name:"Dylan Biaka"},
+  {src:"clasico.png.png", name:"El Clásico"},
+  {src:"fleurynho.png.png", name:"Fleurynho"},
+  {src:"coupe-du-monde.png.jpeg", name:"Coupe du Monde"},
+  {src:"city.png.png", name:"Manchester City"},
+  {src:"rc-lens.png.png", name:"RC Lens"},
+  {src:"strasbourg.png.png", name:"Strasbourg"},
+];
+ 
+// ===== CURSOR =====
+const cursor = document.getElementById('cursor');
+const cursorTrail = document.getElementById('cursor-trail');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+  setTimeout(() => {
+    cursorTrail.style.left = e.clientX + 'px';
+    cursorTrail.style.top = e.clientY + 'px';
+  }, 80);
+});
+ 
+// ===== PARTICLES =====
+const canvas = document.getElementById('particles-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+ 
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+ 
+function createParticle() {
+  return {
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 2 + 0.3,
+    dx: (Math.random() - 0.5) * 0.4,
+    dy: -Math.random() * 0.6 - 0.2,
+    opacity: Math.random() * 0.7 + 0.2,
+    color: Math.random() > 0.6 ? '#1aff6f' : Math.random() > 0.5 ? '#00c3ff' : '#ffffff',
+    life: Math.random() * 200 + 100,
+    age: 0,
+  };
+}
+ 
+for (let i = 0; i < 120; i++) particles.push(createParticle());
+ 
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach((p, i) => {
+    p.x += p.dx;
+    p.y += p.dy;
+    p.age++;
+    if (p.age > p.life || p.y < -10) {
+      particles[i] = createParticle();
+      particles[i].y = canvas.height + 5;
+    }
+    const fade = p.age < 20 ? p.age / 20 : p.age > p.life - 20 ? (p.life - p.age) / 20 : 1;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = p.opacity * fade;
+    ctx.fill();
+    ctx.globalAlpha = 1;
   });
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+ 
+// ===== ANIMATED BAR COUNTERS =====
+function animateBarCounters() {
+  animateCount('bar-abonnes', 3000, 1500);
+  animateCount('bar-affiches', 21, 1200);
+  animateCount('bar-collabs', 2, 800);
+}
+function animateCount(id, target, duration) {
+  const el = document.getElementById(id);
+  const start = performance.now();
+  function tick(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - t, 3);
+    el.textContent = Math.round(ease * target);
+    if (t < 1) requestAnimationFrame(tick);
+    else el.textContent = target;
+  }
+  requestAnimationFrame(tick);
+}
+setTimeout(animateBarCounters, 1000);
+ 
+// ===== CAROUSEL 3D =====
+let carouselIndex = 0;
+const carouselCount = images.length;
+const track = document.getElementById('carousel-track');
+const dotsContainer = document.getElementById('carousel-dots');
+ 
+// Load likes from localStorage
+function getLikes() {
+  try { return JSON.parse(localStorage.getItem('df13_likes') || '{}'); } catch(e) { return {}; }
+}
+function saveLike(i, val) {
+  const l = getLikes(); l[i] = val;
+  try { localStorage.setItem('df13_likes', JSON.stringify(l)); } catch(e){}
+}
+function getLikeCounts() {
+  try { return JSON.parse(localStorage.getItem('df13_likes_counts') || '{}'); } catch(e){ return {}; }
+}
+function saveLikeCount(i, val) {
+  const l = getLikeCounts(); l[i] = val;
+  try { localStorage.setItem('df13_likes_counts', JSON.stringify(l)); } catch(e){}
+}
+ 
+images.forEach((img, i) => {
+  const angle = (360 / carouselCount) * i;
+  const card = document.createElement('div');
+  card.className = 'carousel-card';
+  card.style.transform = `rotateY(${angle}deg) translateZ(${Math.max(400, carouselCount * 45)}px)`;
+ 
+  const likes = getLikes();
+  const likeCounts = getLikeCounts();
+  const liked = likes[i];
+  const count = likeCounts[i] || Math.floor(Math.random() * 80 + 10);
+  if (!likeCounts[i]) saveLikeCount(i, count);
+ 
+  card.innerHTML = `
+    <img src="${img.src}" alt="${img.name}" onerror="this.style.background='#111'; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22280%22 height=%22380%22><rect width=%22280%22 height=%22380%22 fill=%22%23111%22/><text x=%2250%25%22 y=%2250%25%22 font-size=%2260%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22>⚽</text></svg>'">
+    <div class="card-holo-overlay"></div>
+    <div class="card-shine"></div>
+    <div class="card-footer">
+      <button class="like-btn ${liked ? 'liked' : ''}" data-index="${i}" onclick="toggleLike(event,${i})">
+        ${liked ? '❤️' : '🤍'} <span class="like-count">${count}</span>
+      </button>
+      <span style="font-size:0.7em; color:#aaa">${img.name}</span>
+    </div>
+  `;
+  card.addEventListener('click', (e) => {
+    if (e.target.closest('.like-btn')) return;
+    openModal(i);
+  });
+  track.appendChild(card);
+ 
+  const dot = document.createElement('div');
+  dot.className = 'dot' + (i === 0 ? ' active' : '');
+  dot.onclick = () => goToCarousel(i);
+  dotsContainer.appendChild(dot);
 });
-
-function closeModal(){modal.style.display='none'}
-window.onclick=e=>{if(e.target==modal)modal.style.display='none'}
-
-// cursor glow
-window.addEventListener('mousemove',e=>{
-  document.body.style.setProperty('--x',e.clientX+'px');
-  document.body.style.setProperty('--y',e.clientY+'px');
+ 
+function toggleLike(e, i) {
+  e.stopPropagation();
+  const btn = e.currentTarget;
+  const likes = getLikes();
+  const counts = getLikeCounts();
+  const wasLiked = likes[i];
+  const newLiked = !wasLiked;
+  const newCount = (counts[i] || 0) + (newLiked ? 1 : -1);
+  saveLike(i, newLiked);
+  saveLikeCount(i, newCount);
+  btn.className = 'like-btn ' + (newLiked ? 'liked' : '');
+  btn.innerHTML = `${newLiked ? '❤️' : '🤍'} <span class="like-count">${newCount}</span>`;
+ 
+  if (newLiked) {
+    const burst = document.createElement('div');
+    burst.className = 'heart-burst';
+    burst.textContent = '❤️';
+    btn.appendChild(burst);
+    setTimeout(() => burst.remove(), 900);
+    if (newCount % 50 === 0) launchConfetti();
+  }
+}
+ 
+function goToCarousel(idx) {
+  carouselIndex = idx;
+  const angle = -(360 / carouselCount) * carouselIndex;
+  track.style.transform = `rotateY(${angle}deg)`;
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === carouselIndex));
+}
+function carouselMove(dir) {
+  carouselIndex = ((carouselIndex + dir) % carouselCount + carouselCount) % carouselCount;
+  goToCarousel(carouselIndex);
+}
+setInterval(() => carouselMove(1), 4000);
+ 
+// ===== FUT GRID =====
+const futGrid = document.getElementById('fut-grid');
+images.forEach((img, i) => {
+  const card = document.createElement('div');
+  card.className = 'fut-card';
+  card.innerHTML = `
+    <img src="${img.src}" alt="${img.name}" loading="lazy"
+      onerror="this.style.cssText='background:#111;display:block;width:100%;height:200px';this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect width=%22200%22 height=%22200%22 fill=%22%23111%22/><text x=%2250%25%22 y=%2250%25%22 font-size=%2260%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22>⚽</text></svg>'">
+    <div class="fut-badge">FUT</div>
+  `;
+  card.addEventListener('click', () => openModal(i));
+ 
+  // 3D tilt on hover
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.transform = `translateY(-8px) rotateX(${-y * 15}deg) rotateY(${x * 15}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+ 
+  futGrid.appendChild(card);
 });
-
-// fade in
-const f=document.querySelectorAll('.fade');
-const obs=new IntersectionObserver(e=>{
-  e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('show')})
-},{threshold:0.2});
-f.forEach(x=>obs.observe(x));
+ 
+// ===== MODAL =====
+let currentModalIndex = 0;
+function openModal(idx) {
+  currentModalIndex = idx;
+  const modal = document.getElementById('modal');
+  document.getElementById('modal-img').src = images[idx].src;
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+function modalNav(dir) {
+  currentModalIndex = ((currentModalIndex + dir) % images.length + images.length) % images.length;
+  const img = document.getElementById('modal-img');
+  img.style.opacity = '0';
+  img.style.transform = 'scale(0.9)';
+  setTimeout(() => {
+    img.src = images[currentModalIndex].src;
+    img.style.transition = '0.3s';
+    img.style.opacity = '1';
+    img.style.transform = 'scale(1)';
+  }, 200);
+}
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal')) closeModal();
+});
+document.addEventListener('keydown', e => {
+  if (document.getElementById('modal').classList.contains('active')) {
+    if (e.key === 'ArrowLeft') modalNav(-1);
+    if (e.key === 'ArrowRight') modalNav(1);
+    if (e.key === 'Escape') closeModal();
+  }
+});
+ 
+// ===== SECTION COUNTER ANIMATION =====
+const statNums = document.querySelectorAll('.stat-num[data-target]');
+const statObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const el = entry.target;
+    const target = parseInt(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    const start = performance.now();
+    const duration = 1800;
+    function tick(now) {
+      const t = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      el.textContent = Math.round(ease * target) + suffix;
+      if (t < 1) requestAnimationFrame(tick);
+      else el.textContent = target + suffix;
+    }
+    requestAnimationFrame(tick);
+    statObserver.unobserve(el);
+  });
+}, { threshold: 0.5 });
+statNums.forEach(el => statObserver.observe(el));
+ 
+// ===== FADE IN OBSERVER =====
+const fadeEls = document.querySelectorAll('.fade-in');
+const fadeObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+fadeEls.forEach(el => fadeObs.observe(el));
+ 
+// ===== SOUND =====
+let soundOn = false;
+const audio = document.getElementById('stade-audio');
+audio.volume = 0.3;
+function toggleSound() {
+  soundOn = !soundOn;
+  document.getElementById('sound-btn').textContent = soundOn ? '🔇' : '🔊';
+  if (soundOn) audio.play().catch(() => {});
+  else audio.pause();
+}
+ 
+// ===== CONFETTI =====
+function launchConfetti() {
+  const colors = ['#1aff6f', '#00c3ff', '#ffd700', '#ff4466', '#fff'];
+  for (let i = 0; i < 80; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.cssText = `
+      left: ${Math.random() * 100}vw;
+      top: -20px;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      width: ${Math.random() * 12 + 6}px;
+      height: ${Math.random() * 12 + 6}px;
+      animation-duration: ${Math.random() * 2 + 2}s;
+      animation-delay: ${Math.random() * 1}s;
+      border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+    `;
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 4000);
+  }
+}
+ 
+// ===== KONAMI CODE =====
+const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+let konamiPos = 0;
+const progressDots = document.getElementById('konami-progress');
+konamiCode.forEach(() => {
+  const d = document.createElement('div');
+  d.className = 'konami-dot';
+  progressDots.appendChild(d);
+});
+ 
+document.addEventListener('keydown', e => {
+  if (e.key === konamiCode[konamiPos]) {
+    progressDots.children[konamiPos].classList.add('done');
+    konamiPos++;
+    if (konamiPos === konamiCode.length) {
+      konamiPos = 0;
+      Array.from(progressDots.children).forEach(d => d.classList.remove('done'));
+      activateSecret();
+    }
+  } else {
+    konamiPos = 0;
+    Array.from(progressDots.children).forEach(d => d.classList.remove('done'));
+  }
+});
+ 
+function activateSecret() {
+  launchConfetti();
+  document.getElementById('secret-mode').classList.add('active');
+}
+function closeSecret() {
+  document.getElementById('secret-mode').classList.remove('active');
+  launchConfetti();
+}
+ 
+// ===== TIKTOK MODE =====
+const tiktokFeed = document.getElementById('tiktok-feed');
+let tiktokBuilt = false;
+function openTiktok() {
+  if (!tiktokBuilt) {
+    images.forEach((img, i) => {
+      const slide = document.createElement('div');
+      slide.className = 'tiktok-slide';
+      slide.innerHTML = `
+        <img src="${img.src}" alt="${img.name}" onerror="this.style.background='#111'; this.src=''">
+        <div class="tiktok-info"><h3>${img.name}</h3></div>
+        <div class="tiktok-actions">
+          <button class="tiktok-action-btn" onclick="toggleLike(event,${i})">❤️<span>Like</span></button>
+          <button class="tiktok-action-btn">💬<span>Comm.</span></button>
+          <button class="tiktok-action-btn">🔗<span>Share</span></button>
+        </div>
+      `;
+      tiktokFeed.appendChild(slide);
+    });
+    tiktokBuilt = true;
+  }
+  document.body.classList.add('tiktok-mode');
+}
+function closeTiktok() {
+  document.body.classList.remove('tiktok-mode');
+}
+ 
+// ===== EASTER EGG: Click logo 5 times =====
+let logoClicks = 0;
+document.querySelector('.footer-logo')?.addEventListener('click', () => {
+  logoClicks++;
+  if (logoClicks >= 5) { logoClicks = 0; activateSecret(); }
+});
 </script>
-
 </body>
 </html>
+ 
